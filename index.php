@@ -1,16 +1,17 @@
 <?php
+session_start();
 include 'conexao.php';
+
+$erro = ""; // Mensagem de erro
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
     $senha = trim($_POST['senha']);
 
     if (empty($email) || empty($senha)) {
-        echo "<script src='assets/js/sweetalert2.all.min.js'></script>";
-        echo "<script>Swal.fire('Campos vazios', 'Por favor, preencha todos os campos.', 'warning');</script>";
+        $erro = "Por favor, preencha todos os campos.";
     } else {
-        // Protege contra SQL Injection
-        $stmt = $conn->prepare("SELECT * FROM usuarios WHERE email_usuario = ?");
+        $stmt = $conexao->prepare("SELECT * FROM usuarios WHERE email_usuario = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $resultado = $stmt->get_result();
@@ -18,24 +19,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($resultado->num_rows > 0) {
             $usuario = $resultado->fetch_assoc();
 
-            // Verifica senha (ideal usar password_hash no cadastro)
             if (password_verify($senha, $usuario['senha_usuario'])) {
-                echo "<script src='assets/js/sweetalert2.all.min.js'></script>";
-                echo "<script>Swal.fire('Login realizado!', 'Bem-vindo, {$usuario['nome_usuario']}!', 'success');</script>";
+                $_SESSION['id_usuario'] = $usuario['id_usuario'];
+                $_SESSION['nome_usuario'] = $usuario['nome_usuario'];
+
+                header("Location: pagina-inicial.php");
+                exit;
             } else {
-                echo "<script src='assets/js/sweetalert2.all.min.js'></script>";
-                echo "<script>Swal.fire('Erro', 'Senha incorreta.', 'error');</script>";
+                $erro = "Senha incorreta.";
             }
         } else {
-            echo "<script src='assets/js/sweetalert2.all.min.js'></script>";
-            echo "<script>Swal.fire('Erro', 'Usuário não encontrado.', 'error');</script>";
+            $erro = "Usuário não encontrado.";
         }
 
         $stmt->close();
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -46,6 +46,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h2>Login</h2>
+
+        <?php if (!empty($erro)): ?>
+            <div style="color: red; margin-bottom: 10px;">
+                <?php echo htmlspecialchars($erro); ?>
+            </div>
+        <?php endif; ?>
+
         <form method="POST" action="">
             <input type="email" name="email" placeholder="Email" required><br>
             <input type="password" name="senha" placeholder="Senha" required><br>
