@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background: linear-gradient(135deg, #305F49, #679880);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,30 +9,42 @@ body {
 
 .container {
   background: #fff;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  width: 300px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  width: 350px;
   text-align: center;
+}
+
+.container h2 {
+  margin-bottom: 20px;
+  color: #305F49;
 }
 
 input {
   width: 90%;
-  padding: 10px;
-  margin: 8px 0;
+  padding: 12px;
+  margin: 10px 0;
   border-radius: 5px;
   border: 1px solid #ccc;
+  font-size: 16px;
 }
 
 button {
   background-color: #305F49;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+  width: 95%;
 }
 
 button:hover {
   background-color: #679880;
+}
+
+p {
+  margin-top: 15px;
 }

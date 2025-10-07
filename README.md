@@ -4,7 +4,7 @@
 1. Instale o XAMPP
 2. Coloque a pasta do projeto dentro de htdocs
 3. Crie o banco de dados com o script `db.sql`
-4. Acesse http://localhost/teste-software/login.php
+4. Acesse http://localhost/teste-software/index.php
 
 ## Como rodar os testes
 1. Instale o Selenium
